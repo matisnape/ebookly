@@ -1,13 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+jorge_franco:
   first_name: Jorge
   last_name: Franco
 
-two:
+jakub_zulczyk:
   first_name: Jakub
   last_name: Żulczyk
 
-three:
+trevor_noah:
   first_name: Trevor
   last_name: Noah
