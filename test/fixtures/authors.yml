@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  first_name: Jorge
+  last_name: Franco
+
+two:
+  first_name: Jakub
+  last_name: Żulczyk
+
+three:
+  first_name: Trevor
+  last_name: Noah
