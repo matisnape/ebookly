@@ -1,4 +1,2 @@
 $("<%= escape_javascript(render @author) %>").appendTo("#authors");
-$("#author-form").bind("ajax:complete", function(event,xhr,status){
-  $('#author_first_name, #author_last_name').val('');
-});
+$('#author_first_name, #author_last_name').val('');
