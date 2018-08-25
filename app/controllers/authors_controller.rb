@@ -30,7 +30,7 @@ class AuthorsController < ApplicationController
   def update
     author
     if author.update_attributes(author_params)
-      flash[:success] = "Object was successfully updated"
+      flash[:success] = "Author was successfully updated"
       redirect_to authors_path
     else
       flash[:error] = "Something went wrong"

@@ -9,18 +9,11 @@
     </tr>
   </thead>
 
-  <tbody>
-    <% @shops.each.with_index(1) do |shop, index| %>
-      <tr>
-        <td><%= index %></td>
-        <td><%= shop.name %></td>
-        <td><%= link_to "Edit", edit_shop_path(shop) %></td>
-        <td><%= link_to "Destroy", shop, method: :delete, data: { confirm: "Are you sure?" } %></td>
-      </tr>
-    <% end %>
+  <tbody id="shops">
+    <%= render 'form' %>
+    <%= render @shops %>
   </tbody>
 </table>
 
 <br>
 
-<%= link_to "New shop", new_shop_path %>
