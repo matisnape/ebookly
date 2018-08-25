@@ -1,5 +1,4 @@
 <h1>Authors</h1>
-<%= render 'form' %>
 <table>
   <thead>
     <tr>
@@ -11,10 +10,9 @@
   </thead>
 
   <tbody id="authors">
+    <%= render 'form' %>
     <%= render @authors %>
   </tbody>
 </table>
 
 <br>
-
-<%= link_to "New author", new_author_path %>
