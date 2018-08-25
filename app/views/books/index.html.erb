@@ -11,20 +11,11 @@
     </tr>
   </thead>
 
-  <tbody>
-    <% @books.each.with_index(1) do |book, index| %>
-      <tr>
-        <td><%= index %></td>
-        <td><%= book.title %></td>
-        <td><%= book.author.last_name %>, <%= book.author.first_name %></td>
-        <td><%= book.shop.name %></td>
-        <td><%= link_to "Edit", edit_book_path(book) %></td>
-        <td><%= link_to "Destroy", book, method: :delete, data: { confirm: "Are you sure?" } %></td>
-      </tr>
-    <% end %>
+  <tbody id="books">
+    <%= render 'form' %>
+    <%= render @books %>
   </tbody>
 </table>
 
 <br>
 
-<%= link_to "New book", new_book_path %>

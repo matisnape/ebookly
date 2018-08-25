@@ -1,0 +1,8 @@
+<tr id="<%= book.id %>">
+  <td><%= @books.index(book) + 1 %></td>
+  <td><%= book.title %></td>
+  <td><%= book.author.display_author %></td>
+  <td><%= book.shop.display_shop %></td>
+  <td><%= link_to "Edit", book, method: :edit %></td>
+  <td><%= link_to "Delete", book, remote: true, method: :delete, data: { confirm: "Are you sure?" } %></td>
+</tr>
