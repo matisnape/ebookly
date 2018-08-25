@@ -1,0 +1,28 @@
+<h1>Authors</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>No.</th>
+      <th>Name</th>
+      <th>First name</th>
+      <th colspan="2">Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @authors.each.with_index(1) do |author, index| %>
+      <tr>
+        <td><%= index %></td>
+        <td><%= author.last_name %></td>
+        <td><%= author.first_name %></td>
+        <td><%= link_to "Edit", edit_author_path(author) %></td>
+        <td><%= link_to "Destroy", author, method: :delete, data: { confirm: "Are you sure?" } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to "New author", new_author_path %>
