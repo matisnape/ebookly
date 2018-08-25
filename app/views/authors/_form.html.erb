@@ -1,5 +1,5 @@
 <tr>
-  <%= form_with(model: @author) do |f| %>
+  <%= form_with(model: @author, id: 'author-form') do |f| %>
     <td></td>
     <td><%= f.text_field :last_name %></td>
     <td><%= f.text_field :first_name %></td>
