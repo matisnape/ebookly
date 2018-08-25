@@ -2,6 +2,23 @@
 
 virtualo:
   name: Virtualo
-
 publio:
   name: Publio
+woblink:
+  name: Woblink
+ebookpoint:
+  name: Ebookpoint
+leanpub:
+  name: Leanpub
+amazon:
+  name: Amazon
+informit:
+  name: InformIT
+packt:
+  name: Packt
+bookrage:
+  name: Bookrage
+artrage:
+  name: Artrage
+papier:
+  name: Papier
