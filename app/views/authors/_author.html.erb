@@ -1,7 +1,7 @@
-<tr>
+<tr id="<%= author.id %>">
   <td><%= @authors.index(author) + 1 %></td>
   <td><%= author.last_name %></td>
   <td><%= author.first_name %></td>
   <td><%= link_to "Edit", author, method: :edit %></td>
-  <td><%= link_to "Destroy", author, method: :delete, data: { confirm: "Are you sure?" } %></td>
+  <td><%= link_to "Delete", author, remote: true, method: :delete, data: { confirm: "Are you sure?" } %></td>
 </tr>
