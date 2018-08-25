@@ -1,0 +1,7 @@
+<tr>
+  <td><%= @authors.index(author) + 1 %></td>
+  <td><%= author.last_name %></td>
+  <td><%= author.first_name %></td>
+  <td><%= link_to "Edit", edit_author_path(author) %></td>
+  <td><%= link_to "Destroy", author, method: :delete, data: { confirm: "Are you sure?" } %></td>
+</tr>
