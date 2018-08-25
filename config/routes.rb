@@ -3,6 +3,6 @@ Rails.application.routes.draw do
   root 'books#index'
 
   resources :books
-  resources :authors
+  resources :authors, only: [:index, :edit, :destroy]
   resources :shops
 end

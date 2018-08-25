@@ -19,6 +19,21 @@ class AuthorsController < ApplicationController
     end
   end
 
+  def edit
+    author
+  end
+
+  def update
+    author
+    if author.update_attributes(author_params)
+      flash[:success] = "Object was successfully updated"
+      redirect_to authors_path
+    else
+      flash[:error] = "Something went wrong"
+      render 'edit'
+    end
+  end
+
   def destroy
     @author = Author.destroy(params[:id])
     redirect_to authors_path
