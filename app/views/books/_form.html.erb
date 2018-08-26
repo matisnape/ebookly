@@ -2,8 +2,8 @@
   <%= form_with(model: @book, id: 'book-form') do |f| %>
     <td></td>
     <td><%= f.text_field :title %></td>
-    <td><%= f.collection_select(:author_id, @authors, :id, :display_author) %></td>
-    <td><%= f.collection_select(:shop_id, @shops, :id, :display_shop) %></td>
+    <td><%= f.collection_select(:author_id, @authors, :id, :display_name) %></td>
+    <td><%= f.collection_select(:shop_id, @shops, :id, :display_name) %></td>
     <td><%= f.submit "Submit" %></td>
     <td></td>
   <% end %>
