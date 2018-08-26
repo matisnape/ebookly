@@ -3,7 +3,7 @@ class Author < ApplicationRecord
 
   validates :first_name, :last_name, presence: true
 
-  def display_author
+  def display_name
     "#{last_name}, #{first_name}"
   end
 end

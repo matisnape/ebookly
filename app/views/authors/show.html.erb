@@ -1,0 +1,24 @@
+<h1><%= @author.display_name %></h1>
+<table>
+  <thead>
+    <tr>
+      <th>No.</th>
+      <th>Name</th>
+      <th>First name</th>
+      <th colspan="2">Actions</th>
+    </tr>
+  </thead>
+
+  <tbody id="authors">
+    <%= render @author %>
+  </tbody>
+</table>
+
+<h2>Books from this author:</h2>
+<ol>
+  <% @author.books.each do |book| %>
+  <li><%= book.title %> (<%= link_to book.shop.display_name, book.shop %>)</li>
+  <% end %>
+</ol>
+
+<br />

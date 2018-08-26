@@ -23,6 +23,10 @@ class AuthorsController < ApplicationController
     end
   end
 
+  def show
+    author
+  end
+
   def edit
     author
   end
@@ -44,7 +48,7 @@ class AuthorsController < ApplicationController
       format.html { redirect_to @authors, notice: 'Author was successfully destroyed.' }
       format.json { head :no_content }
       format.js
-     end
+    end
   end
 
   private
