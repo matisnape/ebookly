@@ -13,7 +13,7 @@ class AuthorsController < ApplicationController
     @author = Author.new(author_params)
     respond_to do |format|
       if @author.save
-        format.html { redirect_to @author, notice: 'Author created.' }
+        format.html { flash.now[:success] = 'Author created.' }
         format.js
         format.json { render json: @author, status: :created, location: @author }
       else
