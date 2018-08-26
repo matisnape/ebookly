@@ -3,7 +3,7 @@ class Shop < ApplicationRecord
 
   validates :name, presence: true
 
-  def display_shop
+  def display_name
     name
   end
 end

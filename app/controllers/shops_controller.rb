@@ -23,6 +23,10 @@ class ShopsController < ApplicationController
     end
   end
 
+  def show
+    shop
+  end
+
   def edit
     shop
   end
