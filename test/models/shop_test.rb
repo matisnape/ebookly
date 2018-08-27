@@ -19,4 +19,9 @@ class ShopTest < ActiveSupport::TestCase
     @shop.name = 'Some very long łikend'
     assert_equal 'some-very-long-likend', @shop.slug
   end
+
+  test 'to_param method is now equal to slug' do
+    @shop.name = 'Some very long łikend'
+    assert_equal @shop.slug, @shop.to_param
+  end
 end
