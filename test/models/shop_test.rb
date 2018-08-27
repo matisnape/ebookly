@@ -16,13 +16,13 @@ class ShopTest < ActiveSupport::TestCase
   end
 
   test 'Has slug assigned upon validation' do
-    @shop.name = 'Some very long łikend'
-    @shop.validate
-    assert_equal 'some-very-long-likend', @shop.to_slug
+    new_shop = Shop.new(name: 'Some very long łikend')
+    new_shop.validate
+    assert_equal 'some-very-long-likend', new_shop.to_slug
   end
 
-  test 'to_param method is now equal to slug' do
+  test 'to_param method is now equal to to_slug' do
     @shop.name = 'Some very long łikend'
-    assert_equal @shop.slug, @shop.to_param
+    assert_equal @shop.to_slug, @shop.to_param
   end
 end
