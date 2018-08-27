@@ -4,5 +4,5 @@ Rails.application.routes.draw do
 
   resources :books
   resources :authors
-  resources :shops
+  resources :shops, param: :slug
 end

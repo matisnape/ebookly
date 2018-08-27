@@ -58,6 +58,6 @@ class ShopsController < ApplicationController
   end
 
   def shop
-    @shop = Shop.find(params[:id])
+    @shop = Shop.find_by_slug(params[:slug])
   end
 end
