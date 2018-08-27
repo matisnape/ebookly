@@ -4,15 +4,14 @@ class Shop < ApplicationRecord
   validates :name, :slug, presence: true
   validates_uniqueness_of :name, :slug
 
+  before_validation :to_slug
+
   def display_name
     name
   end
 
-  def slug
-    name.parameterize
+  def to_slug
+    slug = name&.parameterize
   end
-
-  def to_param
-    slug
-  end
+  alias_method :to_param, :to_slug
 end

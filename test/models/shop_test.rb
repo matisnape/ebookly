@@ -15,9 +15,10 @@ class ShopTest < ActiveSupport::TestCase
     assert_equal ["can't be blank"], @shop.errors.messages[:name]
   end
 
-  test 'Slug method' do
+  test 'Has slug assigned upon validation' do
     @shop.name = 'Some very long łikend'
-    assert_equal 'some-very-long-likend', @shop.slug
+    @shop.validate
+    assert_equal 'some-very-long-likend', @shop.to_slug
   end
 
   test 'to_param method is now equal to slug' do
