@@ -15,8 +15,4 @@ class Shop < ApplicationRecord
   def to_param
     slug
   end
-
-  def self.add_slugs
-    update(slug: slug(name))
-  end
 end

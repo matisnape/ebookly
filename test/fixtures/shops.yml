@@ -2,23 +2,34 @@
 
 virtualo:
   name: Virtualo
+  slug: virtualo
 publio:
   name: Publio
+  slug: publio
 woblink:
   name: Woblink
+  slug: woblink
 ebookpoint:
   name: Ebookpoint
+  slug: ebookpoint
 leanpub:
   name: Leanpub
+  slug: leanpub
 amazon:
   name: Amazon
+  slug: amazon
 informit:
   name: InformIT
+  slug: informit
 packt:
   name: Packt
+  slug: packt
 bookrage:
   name: Bookrage
+  slug: bookrage
 artrage:
   name: Artrage
+  slug: artrage
 papier:
   name: Papier
+  slug: papier
