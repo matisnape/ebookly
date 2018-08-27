@@ -14,4 +14,9 @@ class ShopTest < ActiveSupport::TestCase
     assert @shop.invalid?
     assert_equal ["can't be blank"], @shop.errors.messages[:name]
   end
+
+  test 'Slug method' do
+    @shop.name = 'Some very long łikend'
+    assert_equal 'some-very-long-likend', @shop.slug
+  end
 end
