@@ -2,7 +2,7 @@ class Shop < ApplicationRecord
   has_many :books, dependent: :destroy
 
   validates :name, :slug, presence: true
-  validates_uniqueness_of :name
+  validates_uniqueness_of :name, :slug
 
   def display_name
     name
