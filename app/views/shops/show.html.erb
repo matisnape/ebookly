@@ -1,6 +1,8 @@
 <h1><%= @shop.display_name %></h1>
 
-<%= render @shop %>
+  <td><%= link_to "Edit", @shop, method: :edit %></td>
+  <td><%= link_to "Delete", @shop, method: :delete, data: { confirm: "Are you sure?" } %></td>
+</tr>
 
 <h2>Books from this shop:</h2>
 <ol>

@@ -13,7 +13,8 @@ class ShopsController < ApplicationController
     @shop = Shop.new(shop_params)
     respond_to do |format|
       if @shop.save
-        format.html { flash.now[:success] = 'Shop created.' }
+        flash.now[:success] = 'Shop created.'
+        format.html
         format.js
         format.json { render json: @shop, status: :created, location: @shop }
       else
@@ -44,8 +45,9 @@ class ShopsController < ApplicationController
 
   def destroy
     shop.destroy
+    flash[:notice] = 'Shop was successfully destroyed.'
     respond_to do |format|
-      format.html { redirect_to :index, notice: 'Shop was successfully destroyed.' }
+      format.html { redirect_to action: 'index' }
       format.json { head :no_content }
       format.js
      end
