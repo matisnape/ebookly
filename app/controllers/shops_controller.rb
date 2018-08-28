@@ -43,7 +43,7 @@ class ShopsController < ApplicationController
   end
 
   def destroy
-    @shop = Shop.destroy(params[:id])
+    shop.destroy
     respond_to do |format|
       format.html { redirect_to @shops, notice: 'Shop was successfully destroyed.' }
       format.json { head :no_content }
