@@ -11,7 +11,7 @@ class Shop < ApplicationRecord
   end
 
   def to_slug
-    slug = name&.parameterize
+    self.slug = name&.parameterize
   end
   alias_method :to_param, :to_slug
 end
