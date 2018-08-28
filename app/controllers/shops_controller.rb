@@ -17,7 +17,7 @@ class ShopsController < ApplicationController
         format.js
         format.json { render json: @shop, status: :created, location: @shop }
       else
-        format.html { flash.now[:error] }
+        format.html { render action: 'index', notice: 'Some errors are here' }
         format.json { render json: @shop.errors, status: :unprocessable_entity }
       end
     end
@@ -45,7 +45,7 @@ class ShopsController < ApplicationController
   def destroy
     shop.destroy
     respond_to do |format|
-      format.html { redirect_to @shops, notice: 'Shop was successfully destroyed.' }
+      format.html { redirect_to :index, notice: 'Shop was successfully destroyed.' }
       format.json { head :no_content }
       format.js
      end
