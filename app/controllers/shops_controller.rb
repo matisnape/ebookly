@@ -20,6 +20,7 @@ class ShopsController < ApplicationController
       else
         format.html { render action: 'index', notice: 'Some errors are here' }
         format.json { render json: @shop.errors, status: :unprocessable_entity }
+        format.js   { render 'shared/flash_messages', message: 'Some errors are here' }
       end
     end
   end
