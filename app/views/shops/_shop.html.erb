@@ -1,6 +1,8 @@
 <tr id="<%= shop.id %>">
-  <td><%= @shops.index(shop) + 1 %></td>
   <td><%= link_to shop.name, shop %></td>
-  <td><%= link_to "Edit", shop, method: :edit %></td>
-  <td><%= link_to "Delete", shop, remote: true, method: :delete, data: { confirm: "Are you sure?" } %></td>
+  <td><%= link_to "Edit", 'javascript:void(0)', class: 'btn btn-warning' %>
+    <span>
+      <%= link_to "Delete", shop, remote: true, method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-danger' %>
+    </span>
+  </td>
 </tr>
