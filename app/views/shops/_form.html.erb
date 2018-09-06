@@ -1,12 +1,13 @@
 <tr>
+  <td colspan='2'>
   <%= form_with(model: @shop, id: 'shop-form') do |f| %>
-    <td><%= f.text_field :name, class: 'input-small' %></td>
-    <td class='float-right'>
-      <%= f.submit 'Save', class: 'btn' %>
-      <span>
-        <%= link_to 'Cancel', 'javascript:void(0)', class: 'btn cancel_btn' %>
-      </span>
-    </td>
-    <td></td>
-  <% end %>
+    <%= f.text_field :name, class: 'input-small' %>
+      <div class='float-right btn-group'>
+        <%= f.submit 'Save', class: 'btn' %>
+        <span>
+          <%= link_to 'Cancel', 'javascript:void(0)', class: 'btn cancel_btn' %>
+        </span>
+      </div>
+    <% end %>
+  </td>
 </tr>
