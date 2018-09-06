@@ -1,4 +1,5 @@
 class ShopsController < ApplicationController
+
   def index
     @shops = Shop.all
     @shop = Shop.new
@@ -45,12 +46,15 @@ class ShopsController < ApplicationController
   end
 
   def destroy
+    @shops = Shop.all
     shop.destroy
-    flash[:notice] = 'Shop was successfully destroyed.'
     respond_to do |format|
-      format.html { redirect_to action: 'index' }
+      format.html do
+        flash[:notice] = 'Shop was successfully destroyed.'
+        redirect_to action: 'index'
+      end
       format.json { head :no_content }
-      format.js
+      format.js   { flash.now[:notice] = 'Shop was successfully destroyed.' }
      end
   end
 
