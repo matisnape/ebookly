@@ -1,2 +1,2 @@
-$("<%= escape_javascript(render @shop) %>").appendTo("#shops");
+$("<%= escape_javascript(render @shop) %>").insertAfter("#shops tr:first-of-type");
 $('#shop_name').val('');
