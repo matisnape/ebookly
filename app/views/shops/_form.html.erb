@@ -1,7 +1,7 @@
-<tr class='hidden'>
+<tr>
   <%= form_with(model: @shop, id: 'shop-form') do |f| %>
     <td><%= f.text_field :name, class: 'input-small' %></td>
-    <td>
+    <td class='float-right'>
       <%= f.submit 'Save', class: 'btn' %>
       <span>
         <%= link_to 'Cancel', 'javascript:void(0)', class: 'btn cancel_btn' %>

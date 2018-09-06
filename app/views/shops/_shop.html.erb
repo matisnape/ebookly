@@ -1,6 +1,7 @@
 <tr id="<%= shop.id %>">
   <td><%= link_to shop.name, shop %></td>
-  <td><%= link_to "Edit", 'javascript:void(0)', class: 'btn btn-warning' %>
+  <td class='float-right'>
+    <%= link_to "Edit", 'javascript:void(0)', class: 'btn btn-warning' %>
     <span>
       <%= link_to "Delete", shop, remote: true, method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-danger' %>
     </span>
