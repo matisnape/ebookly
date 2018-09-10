@@ -19,11 +19,11 @@ class ShopsController < ApplicationController
         format.json { render json: @shop, status: :created, location: @shop }
       else
         format.html do
-          flash[:error] = 'There were some errors with saving.'
+          flash[:error] = 'There were some errors with saving:' + @shop.errors.full_messages.join(', ')
           redirect_to action: 'index'
         end
         format.json { render json: @shop.errors, status: :unprocessable_entity }
-        format.js   { flash.now[:error] = 'Some error are here.' }
+        format.js   { flash.now[:error] = 'Some error are here: ' + @shop.errors.full_messages.join(', ') }
       end
     end
   end
