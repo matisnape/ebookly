@@ -14,14 +14,16 @@ class ShopsController < ApplicationController
     @shop = Shop.new(shop_params)
     respond_to do |format|
       if @shop.save
-        flash.now[:success] = 'Shop created.'
-        format.html
-        format.js
+        format.html { flash[:success] = 'Shop created.' }
+        format.js   { flash.now[:success] = 'Shop created.' }
         format.json { render json: @shop, status: :created, location: @shop }
       else
-        format.html { render action: 'index', notice: 'Some errors are here' }
+        format.html do
+          flash[:error] = 'There were some errors with saving.'
+          redirect_to action: 'index'
+        end
         format.json { render json: @shop.errors, status: :unprocessable_entity }
-        format.js   { render 'shared/flash_messages', message: 'Some errors are here' }
+        format.js   { flash.now[:error] = 'Some error are here.' }
       end
     end
   end
