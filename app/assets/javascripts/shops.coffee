@@ -22,3 +22,15 @@ $(document).ready ->
     $(this).parent().find('.cancel_btn')
       .removeClass('hide')
 
+# discard changes in tr when clicked cancel
+  $('body').on 'click', '.cancel_btn', ->
+    $(this).addClass('hide')
+    $(this).parent().find('.delete_btn')
+      .removeClass('hide')
+    $(this).parent().find('.save_btn')
+      .addClass('edit_btn')
+      .removeClass('save_btn')
+      .text('Edit')
+    $(this).closest('tr').children('td:not(:last)').each ->
+      $.trim($(this).children("input").val())
+
