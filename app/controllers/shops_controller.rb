@@ -1,7 +1,7 @@
 class ShopsController < ApplicationController
 
   def index
-    @shops = Shop.ordered_by_created_at
+    @shops = shops
     @shop = Shop.new
     respond_to do |format|
       format.html
@@ -10,7 +10,7 @@ class ShopsController < ApplicationController
   end
 
   def create
-    @shops = Shop.all
+    @shops = shops
     @shop = Shop.new(shop_params)
     respond_to do |format|
       if @shop.save
@@ -48,7 +48,7 @@ class ShopsController < ApplicationController
   end
 
   def destroy
-    @shops = Shop.all
+    @shops = shops
     shop.destroy
     respond_to do |format|
       format.html do
@@ -68,5 +68,9 @@ class ShopsController < ApplicationController
 
   def shop
     @shop = Shop.find_by_slug(params[:slug])
+  end
+
+  def shops
+    @shops = Shop.ordered_by_created_at
   end
 end
