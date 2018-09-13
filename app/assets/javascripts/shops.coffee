@@ -34,3 +34,18 @@ $(document).ready ->
     $(this).closest('tr').children('td:not(:last)').each ->
       $.trim($(this).children("input").val())
 
+
+#get data from input fields and prepare params and send ajax request for update
+  $('.save_btn').on 'click', ->
+    slug = $(this).closest("tr").attr('id')
+    params_hash = "slug=" + slug + "&"
+    $(this).closest('tr').children('td:not(:last)').each ->
+      cell_value = $.trim($(this).children("input").val())
+      index = $(this).closest("tr").children("td").index($(this)) + 1
+      key = $("#shops").find("th:nth-child(" + index + ")").text().toLowerCase()
+      params_hash += "shop["+key+"]="+cell_value+"&"
+    $.ajax({
+      type: 'PUT'
+      url: '/shops/'+slug
+      data: params_hash
+    })
