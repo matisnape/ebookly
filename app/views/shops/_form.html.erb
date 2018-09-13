@@ -3,10 +3,8 @@
   <%= form_with(model: @shop, id: 'shop-form') do |f| %>
     <%= f.text_field :name, class: 'input-small' %>
       <div class='float-right btn-group'>
-        <%= f.submit 'Save', class: 'btn' %>
-        <span>
-          <%= link_to 'Cancel', 'javascript:void(0)', class: 'btn cancel_btn' %>
-        </span>
+        <%= f.submit 'Save', class: 'btn save_btn' %>
+        <%= link_to 'Cancel', 'javascript:void(0)', class: 'btn cancel_btn' %>
       </div>
     <% end %>
   </td>
