@@ -7,6 +7,8 @@ class Shop < ApplicationRecord
 
   before_validation :to_slug
 
+  scope :ordered_by_created_at, -> { order(created_at: :desc) }
+
   def display_name
     name
   end

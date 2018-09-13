@@ -1,7 +1,7 @@
 class ShopsController < ApplicationController
 
   def index
-    @shops = Shop.all
+    @shops = Shop.ordered_by_created_at
     @shop = Shop.new
     respond_to do |format|
       format.html
