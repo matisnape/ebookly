@@ -34,7 +34,7 @@ discardOnClick = (data) ->
 $(document).ready ->
   $('body').on 'click', '#create_btn', ->
     $('#shop-form').closest('tr').show()
-  $('body').on 'click', '.cancel_btn', ->
+  $('body').on 'click', '.cancel_form_btn', ->
     $('#shop-form').closest('tr').hide()
 
 #replace content in tr with input and add original value in input fields
