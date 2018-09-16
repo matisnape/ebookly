@@ -1,0 +1,7 @@
+<% if @shop %>
+  $('tr#<%= @shop.id %>').replaceWith("<%= j render(partial: 'form', object: @shop ) %>");
+<% end %>
+$("div.jumbotron").prepend("<%= j render(partial: 'shared/flash_messages') %>")
+$('.alert').delay(5000).fadeOut("slow", function () {
+  $(this).remove();
+})

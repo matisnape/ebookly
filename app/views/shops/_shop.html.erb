@@ -4,7 +4,7 @@
     <input class='input-small hide' type='text' size='30'></td>
   <td>
     <div class='float-right btn-group'>
-      <%= link_to "Edit", 'javascript:void(0)', class: 'btn btn-warning edit_btn' %>
+      <%= link_to "Edit", edit_shop_path(shop), remote: true, class: 'btn btn-warning edit_btn' %>
       <%= link_to "Delete", shop, remote: true, method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-danger delete_btn' %>
       <%= link_to 'Cancel', 'javascript:void(0)', class: 'btn cancel_btn hide' %>
     </div>
