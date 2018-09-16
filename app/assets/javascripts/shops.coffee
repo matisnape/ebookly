@@ -4,7 +4,7 @@
 
 editOnClick = (data) ->
   $(data).closest('tr').children('td:not(:last)').each ->
-    cell_value = $.trim($(data).text())
+    cell_value = $.trim($(this).text())
     $(this).children('span').addClass('hide')
     $(this).children('input').removeClass('hide').val(cell_value)
   $(data).removeClass('edit_btn')
@@ -29,6 +29,7 @@ discardOnClick = (data) ->
       .removeClass('hide')
     $(this).children('input')
       .addClass('hide')
+  return
 
 $(document).ready ->
   $('body').on 'click', '#create_btn', ->
