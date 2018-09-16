@@ -1,4 +1,4 @@
-$('tr#<%= @shop.slug %>').remove();
+$('tr#<%= @shop.id %>').remove();
 $("div.jumbotron").prepend("<%= j render(partial: 'shared/flash_messages') %>")
 $('.alert').delay(5000).fadeOut("slow", function () {
   $(this).remove();
