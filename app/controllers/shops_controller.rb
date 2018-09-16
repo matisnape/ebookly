@@ -40,11 +40,16 @@ class ShopsController < ApplicationController
   def update
     shop
     if shop.update_attributes(shop_params)
-      flash[:success] = "Shop was successfully updated"
-      redirect_to shops_path
+      format.html { flash[:success] = 'Shop successfully updated.' }
+      format.js   { flash.now[:success] = 'Shop successfully updated.' }
+      format.json { render json: @shop, status: :updated, location: shop }
     else
-      flash[:error] = "Something went wrong"
-      render 'edit'
+      format.html do
+        flash[:error] = 'There were some errors with saving:' + shop.errors.full_messages.join(', ')
+        redirect_to action: 'index'
+      end
+      format.json { render json: shop.errors, status: :unprocessable_entity }
+      format.js   { flash.now[:error] = 'Some error are here: ' + shop.errors.full_messages.join(', ') }
     end
   end
 
