@@ -41,10 +41,19 @@ $(document).ready ->
   $('.edit_btn').on 'click', ->
     editOnClick this
 
-
 #discard changes in tr when clicked cancel
   $('body').on 'click', '.cancel_btn', ->
     discardOnClick this
+
+  $('#shop-form').on 'ajax:success', (data) ->
+    $('#shop-form')[0].reset()
+    $('#shop-form').closest('tr').hide()
+    $('body').on 'click', '.edit_btn', ->
+      editOnClick this
+    $('body').on 'click', '.cancel_btn', ->
+      discardOnClick this
+    return
+  return
 
 #get data from input fields and prepare params and send ajax request for update
   $('.save_btn').on 'click', ->

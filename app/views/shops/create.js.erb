@@ -1,6 +1,5 @@
 <% if @shop.valid? %>
   $("<%= escape_javascript(render @shop) %>").insertAfter("#shops tr:first-of-type");
-  $('#shop-form input').val('');
 <% end %>
 $("div.jumbotron").prepend("<%= j render(partial: 'shared/flash_messages') %>")
 $('.alert').delay(5000).fadeOut("slow", function () {
