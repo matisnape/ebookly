@@ -38,6 +38,7 @@ class ShopsController < ApplicationController
   end
 
   def update
+    @shops = shops
     shop
     if shop.update_attributes(shop_params)
       format.html { flash[:success] = 'Shop successfully updated.' }
