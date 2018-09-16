@@ -2,6 +2,34 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+editOnClick = (data) ->
+  $(data).closest('tr').children('td:not(:last)').each ->
+    cell_value = $.trim($(data).text())
+    $(this).children('span').addClass('hide')
+    $(this).children('input').removeClass('hide').val(cell_value)
+  $(data).removeClass('edit_btn')
+  $(data).addClass('save_btn')
+  $(data).text('Save')
+  $(data).parent().find('.delete_btn')
+    .addClass('hide')
+  $(data).parent().find('.cancel_btn')
+    .removeClass('hide')
+  return
+
+discardOnClick = (data) ->
+  $(data).addClass('hide')
+  $(data).parent().find('.delete_btn')
+    .removeClass('hide')
+  $(data).parent().find('.save_btn')
+    .addClass('edit_btn')
+    .removeClass('save_btn')
+    .text('Edit')
+  $(data).closest('tr').children('td:not(:last)').each ->
+    $(this).children('span')
+      .removeClass('hide')
+    $(this).children('input')
+      .addClass('hide')
+
 $(document).ready ->
   $('body').on 'click', '#create_btn', ->
     $('#shop-form').closest('tr').show()
@@ -10,32 +38,12 @@ $(document).ready ->
 
 #replace content in tr with input and add original value in input fields
   $('.edit_btn').on 'click', ->
-    $(this).closest('tr').children('td:not(:last)').each ->
-      cell_value = $.trim($(this).text())
-      $(this).children('span').addClass('hide')
-      $(this).children('input').removeClass('hide').val(cell_value)
-    $(this).removeClass('edit_btn')
-    $(this).addClass('save_btn')
-    $(this).text('Save')
-    $(this).parent().find('.delete_btn')
-      .addClass('hide')
-    $(this).parent().find('.cancel_btn')
-      .removeClass('hide')
+    editOnClick this
+
 
 #discard changes in tr when clicked cancel
   $('body').on 'click', '.cancel_btn', ->
-    $(this).addClass('hide')
-    $(this).parent().find('.delete_btn')
-      .removeClass('hide')
-    $(this).parent().find('.save_btn')
-      .addClass('edit_btn')
-      .removeClass('save_btn')
-      .text('Edit')
-    $(this).closest('tr').children('td:not(:last)').each ->
-      $(this).children('span')
-        .removeClass('hide')
-      $(this).children('input')
-        .addClass('hide')
+    discardOnClick this
 
 #get data from input fields and prepare params and send ajax request for update
   $('.save_btn').on 'click', ->
