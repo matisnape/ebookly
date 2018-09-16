@@ -12,8 +12,8 @@ $(document).ready ->
   $('.edit_btn').on 'click', ->
     $(this).closest('tr').children('td:not(:last)').each ->
       cell_value = $.trim($(this).text())
-      $(this).html("<input class='input-small' type='text' size='30'></input>")
-      $(this).children('input').val(cell_value)
+      $(this).children('span').addClass('hide')
+      $(this).children('input').removeClass('hide').val(cell_value)
     $(this).removeClass('edit_btn')
     $(this).addClass('save_btn')
     $(this).text('Save')
@@ -22,7 +22,7 @@ $(document).ready ->
     $(this).parent().find('.cancel_btn')
       .removeClass('hide')
 
-# discard changes in tr when clicked cancel
+#discard changes in tr when clicked cancel
   $('body').on 'click', '.cancel_btn', ->
     $(this).addClass('hide')
     $(this).parent().find('.delete_btn')
@@ -32,8 +32,10 @@ $(document).ready ->
       .removeClass('save_btn')
       .text('Edit')
     $(this).closest('tr').children('td:not(:last)').each ->
-      $.trim($(this).children("input").val())
-
+      $(this).children('span')
+        .removeClass('hide')
+      $(this).children('input')
+        .addClass('hide')
 
 #get data from input fields and prepare params and send ajax request for update
   $('.save_btn').on 'click', ->

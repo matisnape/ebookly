@@ -5,6 +5,7 @@ class ShopsController < ApplicationController
     @shop = Shop.new
     respond_to do |format|
       format.html
+      format.js
       format.json { render json: @shops }
     end
   end
