@@ -20,4 +20,12 @@ class AuthorTest < ActiveSupport::TestCase
     assert @author.invalid?
     assert_equal ["can't be blank"], @author.errors.messages[:last_name]
   end
+
+  test 'URL method contains author ID and author name' do
+    assert_equal "#{@author.id}-#{@author.display_name.parameterize}", @author.to_param
+  end
+
+  test 'display_name method returns formatted name' do
+    assert_equal "#{@author.last_name}, #{@author.first_name}", @author.display_name
+  end
 end
