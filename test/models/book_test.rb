@@ -23,4 +23,8 @@ class BookTest < ActiveSupport::TestCase
     @book.shop = nil
     assert @book.invalid?
   end
+
+  test 'URL contains book ID and title' do
+    assert_equal "#{@book.id}-#{@book.title.parameterize}", @book.to_param
+  end
 end
