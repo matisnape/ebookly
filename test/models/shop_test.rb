@@ -25,4 +25,14 @@ class ShopTest < ActiveSupport::TestCase
     @shop.name = 'Some very long łikend'
     assert_equal @shop.to_slug, @shop.to_param
   end
+
+  test 'Display name method returns shop name' do
+    assert_equal @shop.name, @shop.display_name
+  end
+
+  test 'Shows error if slug is not unique' do
+    @shop2 = Shop.new(name: 'virtualo')
+    assert_not @shop2.valid?
+    assert_equal ["is not unique enough. Maybe this shop already exists?"], @shop2.errors.messages[:name]
+  end
 end
