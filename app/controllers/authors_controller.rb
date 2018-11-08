@@ -1,7 +1,8 @@
 class AuthorsController < ApplicationController
   def index
-    @authors = Author.all
-    @author = Author.new
+    load_authors
+    build_author
+
     respond_to do |format|
       format.html
       format.json { render json: @authors }
@@ -9,8 +10,9 @@ class AuthorsController < ApplicationController
   end
 
   def create
-    @authors = Author.all
-    @author = Author.new(author_params)
+    load_authors
+    build_author
+
     respond_to do |format|
       if @author.save
         format.html { flash.now[:success] = 'Author created.' }
@@ -24,18 +26,20 @@ class AuthorsController < ApplicationController
   end
 
   def show
-    author
+    load_author
   end
 
   def edit
-    author
+    load_author
   end
 
   def update
-    author
-    if author.update_attributes(author_params)
+    load_author
+    build_author
+
+    if @author.save
       flash[:success] = "Author was successfully updated"
-      redirect_to authors_path
+      redirect_to @authors
     else
       flash[:error] = "Something went wrong"
       render 'edit'
@@ -43,9 +47,10 @@ class AuthorsController < ApplicationController
   end
 
   def destroy
-    @author = Author.destroy(params[:id])
+    load_author
+    @author.destroy
     respond_to do |format|
-      format.html { redirect_to @authors, notice: 'Author was successfully destroyed.' }
+      format.html { redirect_to authors_path, notice: 'Author was successfully destroyed.' }
       format.json { head :no_content }
       format.js
     end
@@ -53,11 +58,31 @@ class AuthorsController < ApplicationController
 
   private
 
-  def author_params
-    params.require(:author).permit(:first_name, :last_name)
+  def load_authors
+    @authors ||= author_scope.to_a
   end
 
-  def author
-    @author = Author.find(params[:id])
+  def load_author
+    @author ||= author_scope.find(params[:id])
+  end
+
+  def build_author
+    @author ||= author_scope.build
+    @author.attributes = author_params
+  end
+
+  def save_author
+    if @author.save
+      redirect_to @author
+    end
+  end
+
+  def author_params
+    author_params = params[:author]
+    author_params ? author_params.permit(:first_name, :last_name) : {}
+  end
+
+  def author_scope
+    Author.all
   end
 end
