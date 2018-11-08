@@ -5,15 +5,15 @@
 editOnClick = (data) ->
   $(data).closest('tr').children('td:not(:last)').each ->
     cell_value = $.trim($(this).text())
-    $(this).children('span').addClass('hide')
-    $(this).children('input').removeClass('hide').val(cell_value)
-  $(data).removeClass('edit_btn')
-  $(data).addClass('save_btn')
-  $(data).text('Save')
-  $(data).parent().find('.delete_btn')
-    .addClass('hide')
-  $(data).parent().find('.cancel_btn')
-    .removeClass('hide')
+    # $(this).children('span').addClass('hide')
+    $(this).children('input').val(cell_value)
+  # $(data).removeClass('edit_btn')
+  # $(data).addClass('save_btn')
+  # $(data).text('Save')
+  # $(data).parent().find('.delete_btn')
+  #   .addClass('hide')
+  # $(data).parent().find('.cancel_btn')
+  #   .removeClass('hide')
   return
 
 discardOnClick = (data) ->
@@ -38,12 +38,20 @@ $(document).ready ->
     $('#shop-form').closest('tr').hide()
 
 #replace content in tr with input and add original value in input fields
-  $('.edit_btn').on 'click', ->
-    editOnClick this
+  # $('.edit_btn').on 'click', ->
+  #   editOnClick this
 
 #discard changes in tr when clicked cancel
   $('body').on 'click', '.cancel_btn', ->
     discardOnClick this
+
+#get data from input fields and prepare params and send ajax request for update
+  $('body').on 'click', '.save_btn', ->
+    slug = $(this).closest("tr").attr('id')
+    shop_params = "slug=" + slug + "&"
+    $(this).closest('tr').children('td:not(:last)').each ->
+      cell_value = $.trim($(this).children("input").val())
+      shop_params += "shop[name]="+cell_value+"&"
 
   $('#shop-form').on 'ajax:success', (data) ->
     $('#shop-form')[0].reset()
@@ -54,18 +62,3 @@ $(document).ready ->
       discardOnClick this
     return
   return
-
-#get data from input fields and prepare params and send ajax request for update
-  $('.save_btn').on 'click', ->
-    slug = $(this).closest("tr").attr('id')
-    params_hash = "slug=" + slug + "&"
-    $(this).closest('tr').children('td:not(:last)').each ->
-      cell_value = $.trim($(this).children("input").val())
-      index = $(this).closest("tr").children("td").index($(this)) + 1
-      key = $("#shops").find("th:nth-child(" + index + ")").text().toLowerCase()
-      params_hash += "shop["+key+"]="+cell_value+"&"
-    $.ajax({
-      type: 'PUT'
-      url: '/shops/'+slug
-      data: params_hash
-    })
