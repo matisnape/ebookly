@@ -1,65 +1,66 @@
 class Api::V1::AuthorsController < Api::V1::BaseController
   def index
     load_authors
-    build_author
-
-    respond_to do |format|
-      format.html
-      format.json { render json: @authors }
-    end
   end
 
   def create
     load_authors
     build_author
 
-    respond_to do |format|
-      if @author.save
-        format.html { flash.now[:success] = 'Author created.' }
-        format.js
-        format.json { render json: @author, status: :created, location: @author }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @author.errors, status: :unprocessable_entity }
-      end
-    end
+    return api_error(status: :unprocessable_entity, errors: @author.errors) unless @author.valid?
+
+    @author.save
+    render(
+      json: Api::V1::AuthorSerializer.new(@author).to_json,
+      status: :created,
+      location: api_v1_author_path(@author.id)
+    )
   end
 
   def show
     load_author
-  end
 
-  def edit
-    load_author
+    render(json: Api::V1::AuthorSerializer.new(@author).to_json)
   end
 
   def update
     load_author
     build_author
 
-    if @author.save
-      flash[:success] = "Author was successfully updated"
-      redirect_to @authors
-    else
-      flash[:error] = "Something went wrong"
-      render 'edit'
-    end
+    return api_error(status: :unprocessable_entity, errors: @author.errors) unless @author.valid?
+
+    @author.save
+    render(
+      json: Api::V1::UserSerializer.new(user).to_json,
+      status: 200,
+      location: api_v1_user_path(user.id),
+      serializer: Api::V1::UserSerializer
+    )
   end
 
   def destroy
     load_author
-    @author.destroy
-    respond_to do |format|
-      format.html { redirect_to authors_path, notice: 'Author was successfully destroyed.' }
-      format.json { head :no_content }
-      format.js
+
+    if !@author.destroy
+      return api_error(status: 500)
     end
+
+    head status: 204
   end
 
   private
 
   def load_authors
     @authors ||= author_scope.to_a
+
+    render(
+      json: ActiveModel::ArraySerializer.new(
+        @authors,
+        each_serializer: Api::V1::AuthorSerializer,
+        root: 'authors',
+        meta: meta_attributes(@authors)
+      )
+    )
   end
 
   def load_author
@@ -69,12 +70,6 @@ class Api::V1::AuthorsController < Api::V1::BaseController
   def build_author
     @author ||= author_scope.build
     @author.attributes = author_params
-  end
-
-  def save_author
-    if @author.save
-      redirect_to @author
-    end
   end
 
   def author_params
