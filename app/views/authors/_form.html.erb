@@ -1,11 +1,12 @@
-<tr>
-  <td colspan="5">
-    <%= form_with(model: @author, id: 'author-form') do |f| %>
+<div>
+  <%= render 'shared/error_messages', object: @author %>
 
-      <%= f.text_field :last_name %>
-      <%= f.text_field :first_name %>
-      <%= f.submit "Submit" %>
+  <%= form_with model: @author, local: true do |form| %>
+    <%= form.label :last_name %>
+    <%= form.text_field :last_name %>
+    <%= form.label :first_name %>
+    <%= form.text_field :first_name %>
 
-    <% end %>
-  </td>
-</tr>
+    <%= form.submit "Submit" %>
+  <% end %>
+</div>

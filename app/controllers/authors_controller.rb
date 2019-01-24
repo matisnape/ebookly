@@ -1,7 +1,6 @@
 class AuthorsController < ApplicationController
   def index
     load_authors
-    build_author
 
     respond_to do |format|
       format.html
@@ -9,20 +8,14 @@ class AuthorsController < ApplicationController
     end
   end
 
+  def new
+    build_author
+  end
+
   def create
-    load_authors
     build_author
 
-    respond_to do |format|
-      if @author.save
-        format.html { flash.now[:success] = 'Author created.' }
-        format.js
-        format.json { render json: @author, status: :created, location: @author }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @author.errors, status: :unprocessable_entity }
-      end
-    end
+    save_author or render 'new'
   end
 
   def show
@@ -31,29 +24,20 @@ class AuthorsController < ApplicationController
 
   def edit
     load_author
+    build_author
   end
 
   def update
     load_author
     build_author
 
-    if @author.save
-      flash[:success] = "Author was successfully updated"
-      redirect_to @authors
-    else
-      flash[:error] = "Something went wrong"
-      render 'edit'
-    end
+    save_author or render 'edit'
   end
 
   def destroy
     load_author
     @author.destroy
-    respond_to do |format|
-      format.html { redirect_to authors_path, notice: 'Author was successfully destroyed.' }
-      format.json { head :no_content }
-      format.js
-    end
+    redirect_to authors_path, notice: 'Author was successfully destroyed.'
   end
 
   private
@@ -73,7 +57,8 @@ class AuthorsController < ApplicationController
 
   def save_author
     if @author.save
-      redirect_to @author
+      flash[:success] = 'Author saved.'
+      redirect_to authors_path
     end
   end
 

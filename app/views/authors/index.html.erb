@@ -1,4 +1,7 @@
 <h1>Authors</h1>
+
+<%= link_to "Add author", new_author_path, class: 'btn btn-default' %>
+
 <table>
   <thead>
     <tr>
@@ -10,7 +13,6 @@
   </thead>
 
   <tbody id="authors">
-    <%= render 'form' %>
     <%= render @authors %>
   </tbody>
 </table>
