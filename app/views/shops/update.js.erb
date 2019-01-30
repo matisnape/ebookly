@@ -1,7 +1,0 @@
-<% if @shop.present? && flash[:error].blank? %>
-  $('#shops').find('tr#<%= @shop.id %>').html("<%= escape_javascript(render @shop) %>");
-<% end %>
-$("div.jumbotron").prepend("<%= j render(partial: 'shared/flash_messages') %>")
-$('.alert').delay(5000).fadeOut("slow", function () {
-  $(this).remove();
-})

@@ -1,83 +1,80 @@
 class ShopsController < ApplicationController
 
   def index
-    @shops = shops
-    @shop = Shop.new
+    load_shops
+
     respond_to do |format|
       format.html
-      format.js
       format.json { render json: @shops }
     end
   end
 
   def create
-    @shops = shops
-    @shop = Shop.new(shop_params)
-    respond_to do |format|
-      if @shop.save
-        format.html { flash[:success] = 'Shop created.' }
-        format.js   { flash.now[:success] = 'Shop created.' }
-        format.json { render json: @shop, status: :created, location: @shop }
-      else
-        format.html do
-          flash[:error] = 'There were some errors with saving:' + @shop.errors.full_messages.join(', ')
-          redirect_to action: 'index'
-        end
-        format.json { render json: @shop.errors, status: :unprocessable_entity }
-        format.js   { flash.now[:error] = 'Some error are here: ' + @shop.errors.full_messages.join(', ') }
-      end
+    def new
+      build_shop
+    end
+
+    def create
+      build_shop
+
+      save_shop or render 'new'
     end
   end
 
   def show
-    shop
+    load_shop
   end
 
   def edit
-    shop
+    load_shop
+    build_shop
   end
 
   def update
-    @shops = shops
-    shop
-    if shop.update_attributes(shop_params)
-      format.html { flash[:success] = 'Shop successfully updated.' }
-      format.js   { flash.now[:success] = 'Shop successfully updated.' }
-      format.json { render json: @shop, status: :updated, location: shop }
-    else
-      format.html do
-        flash[:error] = 'There were some errors with saving:' + shop.errors.full_messages.join(', ')
-        redirect_to action: 'index'
-      end
-      format.json { render json: shop.errors, status: :unprocessable_entity }
-      format.js   { flash.now[:error] = 'Some error are here: ' + shop.errors.full_messages.join(', ') }
-    end
+    load_author
+    build_author
+
+    save_author or render 'edit'
   end
 
   def destroy
-    @shops = shops
-    shop.destroy
-    respond_to do |format|
-      format.html do
-        flash[:notice] = 'Shop was successfully destroyed.'
-        redirect_to action: 'index'
-      end
-      format.json { head :no_content }
-      format.js   { flash.now[:notice] = 'Shop was successfully destroyed.' }
-     end
+    load_shop
+    @shop.destroy
+    redirect_to shops_path, notice: 'Shop was successfully destroyed.'
   end
 
   private
 
+  def load_shops
+    @shops ||= shop_scope.to_a
+  end
+
+  def load_shop
+    @shop ||= shop_scope.find_by_slug(params[:slug])
+  end
+
+  def build_shop
+    @shop ||= shop_scope.build
+    @shop.attributes = shop_params
+  end
+
+  def save_shop
+    if @shop.save
+      flash[:success] = 'Shop saved.'
+      redirect_to shops_path
+    end
+  end
+
   def shop_params
-    params.require(:shop).permit(:name)
+    shop_params = params[:shop]
+    shop_params ? shop_params.permit(:name) : {}
+  end
+
+  def shop_scope
+    Shop.ordered_by_created_at
   end
 
   def shop
     @shop = Shop.find_by_slug(params[:slug])
-  end
-
-  def shops
-    @shops = Shop.ordered_by_created_at
   end
 end
