@@ -9,16 +9,14 @@ class ShopsController < ApplicationController
     end
   end
 
+  def new
+    build_shop
+  end
+
   def create
-    def new
-      build_shop
-    end
+    build_shop
 
-    def create
-      build_shop
-
-      save_shop or render 'new'
-    end
+    save_shop or render 'new'
   end
 
   def show
@@ -31,10 +29,10 @@ class ShopsController < ApplicationController
   end
 
   def update
-    load_author
-    build_author
+    load_shop
+    build_shop
 
-    save_author or render 'edit'
+    save_shop or render 'edit'
   end
 
   def destroy
