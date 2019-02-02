@@ -1,10 +1,15 @@
-<tr>
-  <%= form_with(model: @book, id: 'book-form') do |f| %>
-    <td></td>
-    <td><%= f.text_field :title %></td>
-    <td><%= f.collection_select(:author_id, @authors, :id, :display_name) %></td>
-    <td><%= f.collection_select(:shop_id, @shops, :id, :display_name) %></td>
-    <td><%= f.submit "Submit" %></td>
-    <td></td>
+<div>
+  <%= render 'shared/error_messages', object: @book %>
+
+  <%= form_with model: @book, local: true do |form| %>
+    <%= form.label :title %>
+    <%= form.text_field :title %>
+    <%= form.label :author_id %>
+    <%= form.collection_select(:author_id, @authors, :id, :display_name) %>
+    <%= form.label :shop_id %>
+    <%= form.collection_select(:shop_id, @shops, :id, :display_name) %>
+
+    <%= form.submit "Submit" %>
   <% end %>
-</tr>
+</div>
+

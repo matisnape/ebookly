@@ -9,7 +9,7 @@
 <h2>Books from this author:</h2>
 <ol>
   <% @author.books.each do |book| %>
-  <li><%= book.title %> (<%= link_to book.shop.display_name, book.shop %>)</li>
+  <li><%= book.title %> (<%= link_to book.shop_name, book.shop %>)</li>
   <% end %>
 </ol>
 

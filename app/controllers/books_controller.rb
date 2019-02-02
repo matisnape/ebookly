@@ -1,46 +1,92 @@
 class BooksController < ApplicationController
   def index
-    @books = Book.all
-    @book = Book.new
-    @shops = Shop.all.sort_by(&:name)
-    @authors = Author.all.sort_by(&:last_name)
+    load_books
+
     respond_to do |format|
       format.html
       format.json { render json: @books }
     end
   end
 
+  def new
+    build_book
+
+    load_authors
+    load_shops
+  end
+
   def create
-    @books = Book.all
-    @book = Book.new(book_params)
-    respond_to do |format|
-      if @book.save
-        format.html { redirect_to @books, notice: 'Book created.' }
-        format.js
-        format.json { render json: @book, status: :created, location: @book }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @book.errors, status: :unprocessable_entity }
-      end
-    end
+    build_book
+
+    load_authors
+    load_shops
+    save_book or render 'new'
+  end
+
+  def show
+    load_book
+  end
+
+  def edit
+    load_book
+    build_book
+
+    load_authors
+    load_shops
+  end
+
+  def update
+    load_book
+    build_book
+
+    load_authors
+    load_shops
+
+    save_book or render 'edit'
   end
 
   def destroy
-    @book = Book.destroy(params[:id])
-    respond_to do |format|
-      format.html { redirect_to @books, notice: 'Book was successfully destroyed.' }
-      format.json { head :no_content }
-      format.js
-    end
+    load_book
+    @book.destroy
+    redirect_to books_path, notice: 'Book was successfully destroyed.'
   end
 
   private
 
-  def book_params
-    params.require(:book).permit( :title, :author_id, :shop_id )
+  def load_books
+    @books ||= book_scope.to_a
   end
 
-  def book
-    @book = Book.find(params[:id])
+  def load_book
+    @book ||= book_scope.find(params[:id])
+  end
+
+  def build_book
+    @book ||= book_scope.build
+    @book.attributes = book_params
+  end
+
+  def save_book
+    if @book.save
+      flash[:success] = 'Book saved.'
+      redirect_to books_path
+    end
+  end
+
+  def book_params
+    book_params = params[:book]
+    book_params ? book_params.permit(:title, :author_id, :shop_id) : {}
+  end
+
+  def book_scope
+    Book.all
+  end
+
+  def load_authors
+    @authors ||= Author.all.sort_by(&:last_name)
+  end
+
+  def load_shops
+    @shops ||= Shop.all.sort_by(&:name)
   end
 end

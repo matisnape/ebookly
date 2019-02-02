@@ -2,20 +2,20 @@
 
 rosario:
   title: Rosario Tijeras
-  author: jorge_franco
+  author: jorge-franco
   shop: virtualo
 
 wzgorze_psow:
   title: Wzgórze Psów
-  author: jakub_zulczyk
+  author: jakub-zulczyk
   shop: publio
 
 slepnac:
   title: Ślepnąc od Świateł
-  author: jakub_zulczyk
+  author: jakub-zulczyk
   shop: publio
 
 nielegalny:
   title: Nielegalny. Moje dzieciństwo w RPA
-  author: trevor_noah
+  author: trevor-noah
   shop: virtualo

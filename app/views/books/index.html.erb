@@ -1,5 +1,7 @@
 <h1>Books</h1>
 
+<%= link_to "Add book", new_book_path, class: 'btn btn-default' %>
+
 <table>
   <thead>
     <tr>
@@ -12,7 +14,6 @@
   </thead>
 
   <tbody id="books">
-    <%= render 'form' %>
     <%= render @books %>
   </tbody>
 </table>
