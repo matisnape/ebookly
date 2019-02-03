@@ -5,10 +5,10 @@
     <%= form.label :title %>
     <%= form.text_field :title %>
     <br>
-    <%= fields_for :author do |ff| %>
-      <%= form.label :author_id %>
-      <%= form.collection_select(:author_id, @authors, :id, :display_name, prompt: true) %>
-      <p>Or create new:</p>
+    <%= form.label :author_id %>
+    <%= form.collection_select(:author_id, @authors, :id, :display_name, prompt: true) %>
+    <p>Or create new:</p>
+    <%= form.fields_for :author, @book.author do |ff| %>
       <div>
         <%= ff.label :last_name %>
         <%= ff.text_field :last_name %>

@@ -1,9 +1,9 @@
 class Book < ApplicationRecord
   belongs_to :author
   belongs_to :shop
-  accepts_nested_attributes_for :author
+  accepts_nested_attributes_for :author, reject_if: :all_blank
 
-  validates :title, :author, :shop, presence: true
+  validates :title, :shop, presence: true
 
   def shop_name
     shop.display_name
@@ -16,4 +16,9 @@ class Book < ApplicationRecord
   def to_param
   "#{id}-#{title.parameterize}"
   end
+
+  def test(attributes)
+    attributes["author_id"].blank?
+  end
+
 end

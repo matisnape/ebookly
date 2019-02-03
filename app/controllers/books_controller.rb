@@ -10,16 +10,17 @@ class BooksController < ApplicationController
 
   def new
     build_book
+    @book.build_author
 
     load_authors
     load_shops
   end
 
   def create
-    build_book
-
     load_authors
     load_shops
+
+    @book = Book.new(book_params)
     save_book or render 'new'
   end
 
@@ -75,7 +76,7 @@ class BooksController < ApplicationController
 
   def book_params
     book_params = params[:book]
-    book_params ? book_params.permit(:title, :shop_id, author_attributes: [ :first_name, :last_name ]) : {}
+    book_params ? book_params.permit(:title, :shop_id, :author_id, author_attributes: [ :first_name, :last_name ]) : {}
   end
 
   def book_scope
