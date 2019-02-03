@@ -75,7 +75,7 @@ class BooksController < ApplicationController
 
   def book_params
     book_params = params[:book]
-    book_params ? book_params.permit(:title, :author_id, :shop_id) : {}
+    book_params ? book_params.permit(:title, :shop_id, author_attributes: [ :first_name, :last_name ]) : {}
   end
 
   def book_scope
