@@ -91,7 +91,7 @@ class BooksController < ApplicationController
   end
 
   def book_scope
-    Book.all
+    Book.all.includes(:shop, :author)
   end
 
   def load_authors

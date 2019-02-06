@@ -69,10 +69,6 @@ class ShopsController < ApplicationController
   end
 
   def shop_scope
-    Shop.ordered_by_created_at
-  end
-
-  def shop
-    @shop = Shop.find_by_slug(params[:slug])
+    Shop.ordered_by_created_at.includes(books: :author)
   end
 end

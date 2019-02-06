@@ -68,6 +68,6 @@ class AuthorsController < ApplicationController
   end
 
   def author_scope
-    Author.all
+    Author.all.includes(:books)
   end
 end
