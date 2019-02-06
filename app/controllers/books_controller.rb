@@ -21,7 +21,7 @@ class BooksController < ApplicationController
     load_shops
 
     if book_params[:author_id]
-      @book = Book.new(book_params.merge!(author_attributes: { first_name: '', last_name: '' }))
+      @book = Book.new(book_params.except(:author_attributes))
     else
       @book = Book.new(book_params)
     end
@@ -49,7 +49,7 @@ class BooksController < ApplicationController
     load_shops
 
     if book_params[:author_id]
-      @book.update_attributes(book_params.merge!(author_attributes: { first_name: '', last_name: '' }))
+      @book.update_attributes(book_params.except(:author_attributes))
     else
       @book.update_attributes(book_params)
     end
