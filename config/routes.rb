@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   resources :books
   resources :authors
   resources :shops, param: :slug
+  resources :search, only: [:index]
 end

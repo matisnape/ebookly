@@ -1,0 +1,22 @@
+<h1>Search results</h1>
+
+<%= link_to "Add book", new_book_path, class: 'btn btn-default' %>
+
+<table>
+  <thead>
+    <tr>
+      <th>No.</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Shop</th>
+      <th colspan="2">Actions</th>
+    </tr>
+  </thead>
+
+  <tbody id="books">
+    <%= render @books %>
+  </tbody>
+</table>
+
+<br>
+
