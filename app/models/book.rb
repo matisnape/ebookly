@@ -23,8 +23,4 @@ class Book < ApplicationRecord
   "#{id}-#{title.parameterize}"
   end
 
-  def test(attributes)
-    attributes["author_id"].blank?
-  end
-
 end
