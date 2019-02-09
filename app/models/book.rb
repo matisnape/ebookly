@@ -8,7 +8,7 @@ class Book < ApplicationRecord
   validates :title, :shop, presence: true
 
   pg_search_scope :search_by_title, against: [:title], using: {
-    tsearch: { any_word: true }
+    tsearch: { any_word: true, prefix: true }
   }
 
   def shop_name
