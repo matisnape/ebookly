@@ -18,7 +18,7 @@ module Scrape
     def initialize()
       @login = Rails.application.credentials.woblink[:login]
       @password = Rails.application.credentials.woblink[:password]
-      @books = []
+      @books_to_sync = []
     end
 
     def run!
@@ -56,30 +56,55 @@ module Scrape
       doc = Nokogiri::HTML(page.html)
       items = doc.css('.shelf-book')
       # collect books & authors
-      items.each_with_index do |item, index|
+      items.each do |item|
         title = item.css("h3").text
         author = item.css('.author a').children.map(&:text).first
-        @books << {
-          position: index+1,
+        @books_to_sync << {
           title: title,
-          author: author
+          author_attributes: {
+            first_name:         # the rest without last name
+            last_name:          # last word separated by space
+          }
         }
       end
-      puts "Number of books on shelf: " + @books.size
+      puts "Number of books on shelf: #{@books_to_sync.size}"
     end
 
     def check_against_database
       db_books = Shop.find_by(name: "Woblink").books
-      if @books.count == db_books.count
+      puts "Number of books in database: #{db_books.count}"
+      if @books_to_sync.count == db_books.count
         return "No new books available"
       end
-      woblink_books = []
+      synced_books = []
       db_books.each do |db_book|
-        woblink_books << {
+        synced_books << {
           title: db_book.title,
-          author: "#{db_book.author.first_name} #{db_book.author.last_name}"
+          author_attributes: {
+            first_name: db_book.author.first_name
+            last_name: db_book.author.last_name
+          }
         }
       end
+      shop = Shop.find_by(name: "Woblink")
+
+      diff = @books_to_sync - synced_books
+      diff.each do |book|
+
+      end
+
+      missing_authors = @books_to_sync.map{ |bk| bk[:author]}.uniq
+      existing_authors = Author.all.pluck(:first_name, :last_name)
+      existing_authors2 = []
+      existing_authors.each do |aut|
+        existing_authors2 << "#{aut[0]} #{aut[1]}"
+      end
+      authors_to_add = (missing_authors - existing_authors2).compact
+
+    end
+
+    def create_missing_authors
+
     end
 
     def save_to_db(book)
