@@ -18,6 +18,7 @@ module Scrape
     def initialize()
       @login = Rails.application.credentials.woblink[:login]
       @password = Rails.application.credentials.woblink[:password]
+      @purchased_books = []
       @books_to_sync = []
     end
 
@@ -26,6 +27,7 @@ module Scrape
       go_to_shelf
       list_all_books
       check_against_database
+      save_books_to_database(@books_to_sync)
     end
 
     private
@@ -59,7 +61,7 @@ module Scrape
       items.each do |item|
         title = item.css("h3").text
         author = item.css('.author a').children.map(&:text).first
-        @books_to_sync << {
+        @purchased_books << {
           title: title,
           author_attributes: {
             first_name:         # the rest without last name
@@ -67,15 +69,18 @@ module Scrape
           }
         }
       end
-      puts "Number of books on shelf: #{@books_to_sync.size}"
+      puts "Number of books on shelf: #{@purchased_books.size}"
     end
 
     def check_against_database
-      db_books = Shop.find_by(name: "Woblink").books
+      shop = Shop.find_by(name: "Woblink")
+      db_books = shop.books
+
       puts "Number of books in database: #{db_books.count}"
-      if @books_to_sync.count == db_books.count
+      if @purchased_books.count == db_books.count
         return "No new books available"
       end
+
       synced_books = []
       db_books.each do |db_book|
         synced_books << {
@@ -86,12 +91,8 @@ module Scrape
           }
         }
       end
-      shop = Shop.find_by(name: "Woblink")
 
-      diff = @books_to_sync - synced_books
-      diff.each do |book|
-
-      end
+      @books_to_sync = @purchased_books - synced_books
 
       missing_authors = @books_to_sync.map{ |bk| bk[:author]}.uniq
       existing_authors = Author.all.pluck(:first_name, :last_name)
@@ -100,6 +101,12 @@ module Scrape
         existing_authors2 << "#{aut[0]} #{aut[1]}"
       end
       authors_to_add = (missing_authors - existing_authors2).compact
+
+      # create missing authors in database
+
+      @books_to_sync.each do |book|
+        # here create the books
+      end
 
     end
 
