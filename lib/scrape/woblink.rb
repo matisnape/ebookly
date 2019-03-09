@@ -54,18 +54,32 @@ module Scrape
 
     def list_all_books
       doc = Nokogiri::HTML(page.html)
-
       items = doc.css('.shelf-book')
-      author = items.first.css('.author a').children.map(&:text)
-
+      # collect books & authors
       items.each_with_index do |item, index|
         title = item.css("h3").text
         author = item.css('.author a').children.map(&:text).first
-        @books << { position: index+1, title: title, author: author }
+        @books << {
+          position: index+1,
+          title: title,
+          author: author
+        }
       end
+      puts "Number of books on shelf: " + @books.size
     end
 
     def check_against_database
+      db_books = Shop.find_by(name: "Woblink").books
+      if @books.count == db_books.count
+        return "No new books available"
+      end
+      woblink_books = []
+      db_books.each do |db_book|
+        woblink_books << {
+          title: db_book.title,
+          author: "#{db_book.author.first_name} #{db_book.author.last_name}"
+        }
+      end
     end
 
     def save_to_db(book)
