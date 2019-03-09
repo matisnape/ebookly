@@ -1,19 +1,10 @@
-require 'selenium-webdriver'
 require 'capybara'
 require 'capybara/dsl'
 require 'capybara/minitest'
-require 'nokogiri'
-require 'json'
-require 'byebug'
-ENV['RAILS_ENV'] ||= 'production'
-require_relative '../../config/environment'
 
 module Scrape
   class Woblink
     include Capybara::DSL
-    include Capybara::Minitest::Assertions
-
-    attr_accessor :assertions
 
     Capybara.register_driver :selenium do |app|
       Capybara::Selenium::Driver.new(app, browser: :chrome)
@@ -27,7 +18,6 @@ module Scrape
     def initialize()
       @login = Rails.application.credentials.woblink[:login]
       @password = Rails.application.credentials.woblink[:password]
-      self.assertions = 0
       @books = []
     end
 
@@ -65,6 +55,12 @@ module Scrape
     def list_all_books
       doc = Nokogiri::HTML(page.html)
       byebug
+
+      items = doc.css('.shelf-book')
+      title = item.first.css("h3").text
+      author = item.first.css('.author a').children.map(&:text)
+
+      @books << { position: 1, title: title, author: author }
 
 
 
