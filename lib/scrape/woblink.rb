@@ -54,16 +54,15 @@ module Scrape
 
     def list_all_books
       doc = Nokogiri::HTML(page.html)
-      byebug
 
       items = doc.css('.shelf-book')
-      title = item.first.css("h3").text
-      author = item.first.css('.author a').children.map(&:text)
+      author = items.first.css('.author a').children.map(&:text)
 
-      @books << { position: 1, title: title, author: author }
-
-
-
+      items.each_with_index do |item, index|
+        title = item.css("h3").text
+        author = item.css('.author a').children.map(&:text).first
+        @books << { position: index+1, title: title, author: author }
+      end
     end
 
     def check_against_database
