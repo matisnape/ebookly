@@ -82,10 +82,11 @@ module Scrape
       db_books = shop.books
 
       puts "Number of books in database: #{db_books.count}"
+
       if @purchased_books.count == db_books.count
         return "No new books available"
       end
-
+      # list books already in database
       synced_books = []
       db_books.each do |db_book|
         synced_books << {
@@ -100,15 +101,14 @@ module Scrape
 
       @books_to_sync = @purchased_books - synced_books
 
-      missing_authors = @books_to_sync.map{ |bk| bk[:author]}.uniq
+      missing_authors = @books_to_sync.map{ |bk| bk[:author_attributes]}.uniq
       existing_authors = Author.all.pluck(:first_name, :last_name)
-      existing_authors2 = []
-      existing_authors.each do |aut|
-        existing_authors2 << "#{aut[0]} #{aut[1]}"
-      end
-      authors_to_add = (missing_authors - existing_authors2).compact
-
+      authors_to_add = missing_authors - existing_authors
+      puts "Authors to create: #{authors_to_add.count}"
       # create missing authors in database
+      authors_to_add.each do |person|
+        Author.create(first_name: person[:first_name], last_name: person[:last_name])
+      end
 
       @books_to_sync.each do |book|
         # here create the books
