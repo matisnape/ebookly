@@ -60,12 +60,17 @@ module Scrape
       # collect books & authors
       items.each do |item|
         title = item.css("h3").text
-        author = item.css('.author a').children.map(&:text).first
+        first_author = item.css('.author a').children.map(&:text).first
+        if first_author.nil?
+          author = "autor zbiorowy".split(' ')
+        else
+          author = first_author.split(' ')
+        end
         @purchased_books << {
           title: title,
           author_attributes: {
-            first_name:         # the rest without last name
-            last_name:          # last word separated by space
+            first_name: author[0..-2].join(' '),   # the rest without last name
+            last_name: author.last                 # last word separated by space
           }
         }
       end
@@ -86,11 +91,12 @@ module Scrape
         synced_books << {
           title: db_book.title,
           author_attributes: {
-            first_name: db_book.author.first_name
+            first_name: db_book.author.first_name,
             last_name: db_book.author.last_name
           }
         }
       end
+      binding.pry
 
       @books_to_sync = @purchased_books - synced_books
 
