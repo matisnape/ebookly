@@ -27,7 +27,8 @@ module Scrape
       go_to_shelf
       list_all_books
       check_against_database
-      save_books_to_database(@books_to_sync)
+      create_missing_authors
+      save_books_to_database
     end
 
     private
@@ -97,34 +98,30 @@ module Scrape
           }
         }
       end
-      binding.pry
-
       @books_to_sync = @purchased_books - synced_books
-
-      missing_authors = @books_to_sync.map{ |bk| bk[:author_attributes]}.uniq
-      existing_authors = Author.all.pluck(:first_name, :last_name)
-      authors_to_add = missing_authors - existing_authors
-      puts "Authors to create: #{authors_to_add.count}"
-      # create missing authors in database
-      authors_to_add.each do |person|
-        Author.create(first_name: person[:first_name], last_name: person[:last_name])
-      end
-
-      @books_to_sync.each do |book|
-        # here create the books
-      end
-
     end
 
     def create_missing_authors
+      missing_authors = @books_to_sync.map{ |bk| bk[:author_attributes]}.uniq
+      existing_authors = Author.all.pluck(:first_name, :last_name)
 
+      authors_to_add = missing_authors - existing_authors
+      puts "Authors to create: #{authors_to_add.count}"
+
+      # create missing authors in database
+      authors_to_add.each do |person|
+        Author.create(first_name: person[:first_name], last_name: person[:last_name])
+        puts "Created: #{person[:first_name]} #{person[:last_name]}"
+      end
     end
 
     def save_to_db(book)
+      binding.pry
+
     end
 
-    def save_books_to_database(arr)
-      arr.each do |book|
+    def save_books_to_database
+      @books_to_sync.each do |book|
         save_to_db(book)
       end
     end
