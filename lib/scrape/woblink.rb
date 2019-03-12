@@ -18,6 +18,7 @@ module Scrape
     def initialize()
       @login = Rails.application.credentials.woblink[:login]
       @password = Rails.application.credentials.woblink[:password]
+      @shelved_books = []
       @purchased_books = []
       @books_to_sync = []
     end
@@ -25,7 +26,10 @@ module Scrape
     def run!
       login
       go_to_shelf
-      list_all_books
+      list_all_books_from_shelf
+      go_to_orders
+      list_all_books_from_orders
+      unify_books_list
       check_against_database
       create_missing_authors
       save_books_to_database
@@ -55,7 +59,7 @@ module Scrape
       page.find("#shelf-filters-pagination").assert_text "POKAŻ: Wszystkie"
     end
 
-    def list_all_books
+    def list_all_books_from_shelf
       doc = Nokogiri::HTML(page.html)
       items = doc.css('.shelf-book')
       # collect books & authors
@@ -67,7 +71,7 @@ module Scrape
         else
           author = first_author.split(' ')
         end
-        @purchased_books << {
+        @shelved_books << {
           title: title,
           author_attributes: {
             first_name: author[0..-2].join(' '),   # the rest without last name
@@ -75,7 +79,44 @@ module Scrape
           }
         }
       end
-      puts "Number of books on shelf: #{@purchased_books.size}"
+      puts "Number of books on shelf: #{@shelved_books.size}"
+    end
+
+    def go_to_orders
+      visit 'https://woblink.com/profile/transactionList?action=transactionList&status=finished#nw_profil_nawigacja'
+    end
+
+    def list_all_books_from_orders
+      doc = Nokogiri::HTML(page.html).css('#shelf-books')
+      orders = doc.css('tbody tr')
+      orders.each do |order|
+        order_date = order.css("td[data-label='Data']").text
+        books = order.css("td tbody tr")
+        books.each do |book|
+          title = book.css("td a[title]").text.strip
+          first_author = book.css("td p").text.split('; ').first
+          if first_author.nil?
+            author = "autor zbiorowy".split(' ')
+          else
+            author = first_author.split(' ')
+          end
+          @purchased_books << {
+            order_date: order_date,
+            title: title,
+            author_attributes: {
+              first_name: author[0..-2].join(' '),   # the rest without last name
+              last_name: author.last                 # last word separated by space
+            }
+          }
+        end
+      end
+      puts "Number of books purchased: #{@purchased_books.size}"
+    end
+
+    def unify_books_list
+      purchased_books_without_order = @purchased_books.each { |pb| pb.delete(:order_date) }
+
+      # if book from shelved exists with the same title in purchased, don't add it to new array
     end
 
     def check_against_database
@@ -84,7 +125,7 @@ module Scrape
 
       puts "Number of books in database: #{db_books.count}"
 
-      if @purchased_books.count == db_books.count
+      if @shelved_books.count == db_books.count
         return "No new books available"
       end
       # list books already in database
@@ -98,11 +139,15 @@ module Scrape
           }
         }
       end
-      @books_to_sync = @purchased_books - synced_books
+      # need to figure out how to merge purchased books with shelved books
+      @books_to_sync = @shelved_books - synced_books
     end
 
     def create_missing_authors
-      missing_authors = @books_to_sync.map{ |bk| bk[:author_attributes]}.uniq
+      missing_authors = (
+        @books_to_sync.map{ |bk| bk[:author_attributes]} +
+        @purchased_books.map{ |bk| bk[:author_attributes]}
+      ).uniq
       existing_authors = Author.all.pluck(:first_name, :last_name)
 
       authors_to_add = missing_authors - existing_authors
